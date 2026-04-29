@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel · EDI Procesamiento de Datos I</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --purple: #6C4EF6;
+    --purple-light: #EDE9FF;
+    --purple-mid: #A68EFA;
+    --teal: #2DD4BF;
+    --teal-light: #CCFBF1;
+    --amber: #F59E0B;
+    --amber-light: #FEF3C7;
+    --pink: #EC4899;
+    --pink-light: #FCE7F3;
+    --bg: #F4F2FF;
+    --card: #FFFFFF;
+    --text: #1E1B4B;
+    --text-muted: #6B7280;
+    --border: #E5E0FF;
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(108,78,246,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(45,212,191,0.08) 0%, transparent 40%);
+  }
+
+  h1 {
+    font-size: 14px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    color: var(--purple);
+    letter-spacing: 0.08em;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 16px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* ---- LEFT PANEL ---- */
+  .left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pet-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #pet-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+  }
+  #pet-wrap:hover #cosmo { transform: scale(1.06); }
+  #cosmo { transition: transform 0.2s ease; transform-origin: center bottom; }
+
+  .pet-name {
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--purple);
+  }
+
+  .xp-section { width: 100%; }
+  .xp-top { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-family: 'Space Mono', monospace; }
+  .xp-track { width: 100%; height: 8px; background: var(--purple-light); border-radius: 99px; overflow: hidden; }
+  .xp-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple-mid)); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+  .mood-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .mood-pill {
+    font-size: 11px; padding: 4px 10px; border-radius: 99px;
+    border: 1.5px solid var(--border); background: white;
+    cursor: pointer; color: var(--text-muted); font-weight: 600;
+    transition: all 0.15s;
+  }
+  .mood-pill:hover { border-color: var(--purple-mid); color: var(--purple); }
+  .mood-pill.active { background: var(--purple-light); border-color: var(--purple); color: var(--purple); }
+
+  .badges-card {
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    padding: 12px;
+  }
+  .badges-title { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.06em; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .badge {
+    font-size: 10px; padding: 3px 9px; border-radius: 99px; font-weight: 700;
+    background: var(--purple-light); color: var(--purple);
+    border: 1px solid #D4CAFF;
+    transition: transform 0.2s;
+  }
+  .badge.locked { background: #F3F4F6; color: #9CA3AF; border-color: #E5E7EB; }
+  .badge.unlocked { animation: pop 0.4s ease; }
+  @keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+  .quick-topics {
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    padding: 12px;
+  }
+  .qt-title { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.06em; }
+  .qt-btn {
+    display: block; width: 100%; text-align: left; padding: 7px 10px;
+    border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+    background: white; cursor: pointer; font-size: 12px; font-weight: 600;
+    color: var(--text); margin-bottom: 5px; transition: all 0.15s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .qt-btn:last-child { margin-bottom: 0; }
+  .qt-btn:hover { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+  .qt-btn .icon { margin-right: 6px; font-size: 13px; }
+
+  /* ---- RIGHT PANEL ---- */
+  .right-panel { display: flex; flex-direction: column; gap: 12px; }
+
+  .chat-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 380px;
+  }
+
+  #chat-log {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    padding-right: 4px;
+  }
+  #chat-log::-webkit-scrollbar { width: 4px; }
+  #chat-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+  .msg {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .msg.cosmo .avatar {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: var(--purple-light); display: flex; align-items: center; justify-content: center;
+    font-size: 14px; border: 1.5px solid var(--border);
+  }
+  .msg.user { flex-direction: row-reverse; }
+  .msg.user .avatar {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: var(--teal-light); display: flex; align-items: center; justify-content: center;
+    font-size: 14px; border: 1.5px solid #A7F3D0;
+  }
+
+  .bubble {
+    max-width: 78%; padding: 10px 14px;
+    border-radius: 16px; font-size: 13px; line-height: 1.65; font-weight: 600;
+  }
+  .msg.cosmo .bubble {
+    background: var(--purple-light); color: var(--text);
+    border-top-left-radius: 4px;
+    border: 1px solid #DDD6FF;
+  }
+  .msg.user .bubble {
+    background: var(--teal-light); color: #065F46;
+    border-top-right-radius: 4px;
+    border: 1px solid #A7F3D0;
+  }
+
+  .typing-dots { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--purple-mid); animation: bounce 0.9s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.18s; }
+  .dot:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  .input-area {
+    display: flex; gap: 8px; align-items: flex-end;
+  }
+  #user-input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    padding: 10px 14px; font-size: 13px; font-family: 'Nunito', sans-serif;
+    font-weight: 600; background: var(--bg); color: var(--text); resize: none;
+    transition: border-color 0.15s; line-height: 1.5;
+  }
+  #user-input:focus { outline: none; border-color: var(--purple); }
+  #user-input::placeholder { color: #C4B8FF; font-weight: 400; }
+
+  #send-btn {
+    padding: 10px 18px; border-radius: var(--radius-sm);
+    background: var(--purple); color: white; border: none;
+    font-size: 13px; font-weight: 800; cursor: pointer;
+    font-family: 'Nunito', sans-serif; transition: all 0.15s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  #send-btn:hover { background: #5B3FE4; transform: translateY(-1px); }
+  #send-btn:active { transform: translateY(0) scale(0.97); }
+  #send-btn:disabled { background: var(--purple-mid); cursor: not-allowed; transform: none; }
+
+  .stars-row { display: flex; gap: 5px; align-items: center; }
+  .star { font-size: 18px; cursor: pointer; color: #E5E7EB; transition: color 0.1s, transform 0.1s; }
+  .star:hover, .star.lit { color: var(--amber); }
+  .star:hover { transform: scale(1.15); }
+  .stars-label { font-size: 11px; color: var(--text-muted); margin-left: 4px; font-family: 'Space Mono', monospace; }
+
+  .fun-card {
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    padding: 12px 16px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .fun-label { font-size: 10px; font-family: 'Space Mono', monospace; color: var(--text-muted); letter-spacing: 0.06em; width: 100%; }
+  .fun-btn {
+    font-size: 12px; padding: 5px 13px; border-radius: 99px;
+    border: 1.5px solid var(--border); background: white;
+    cursor: pointer; font-weight: 700; font-family: 'Nunito', sans-serif;
+    color: var(--text-muted); transition: all 0.15s;
+  }
+  .fun-btn:hover { color: var(--pink); border-color: var(--pink); background: var(--pink-light); }
+
+  #status-bar {
+    text-align: center; font-size: 11px; font-family: 'Space Mono', monospace;
+    color: var(--text-muted); padding: 6px;
+    background: white; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .layout { grid-template-columns: 1fr; }
+    .left-panel { flex-direction: row; flex-wrap: wrap; }
+    .pet-card { flex: 1; min-width: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>· PIXEL · EDI Procesamiento de Datos I ·</h1>
+<p class="subtitle">Escuela Nº 43 "Prof. Hugo Del Rosso" · 5° año Div. I · 2026</p>
+
+<div class="layout">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+
+    <div class="pet-card">
+      <div id="pet-wrap" onclick="petClick()" title="¡Hacé clic en mí!">
+        <svg id="cosmo" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+          <path id="tail" d="M90 96 Q112 82 105 64" fill="none" stroke="#A68EFA" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+          <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
+          <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
+          <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
+          <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
+          <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+          <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+          <circle id="pl" cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
+          <circle id="pr" cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
+          <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
+          <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
+          <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
+          <path id="mouth" d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="40" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
+          <ellipse cx="80" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
+          <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
+          <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
+          <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
+          <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
+          <ellipse cx="38" cy="110" rx="13" ry="8" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1"/>
+          <ellipse cx="82" cy="110" rx="13" ry="8" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <div class="pet-name">Pixel</div>
+
+      <div class="xp-section">
+        <div class="xp-top">
+          <span>Nivel <span id="lvl">1</span></span>
+          <span id="xp-txt">10/100 XP</span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:10%"></div></div>
+      </div>
+
+      <div class="mood-pills">
+        <button class="mood-pill active" onclick="setMood('curioso',this)">Curioso</button>
+        <button class="mood-pill" onclick="setMood('contento',this)">Contento</button>
+        <button class="mood-pill" onclick="setMood('pensativo',this)">Pensativo</button>
+      </div>
+    </div>
+
+    <div class="badges-card">
+      <div class="badges-title">LOGROS</div>
+      <div class="badge-row" id="badge-row">
+        <span class="badge" id="b-first">Primera pregunta</span>
+        <span class="badge locked" id="b-exp">Explorador</span>
+        <span class="badge locked" id="b-hw">Guru del Hardware</span>
+        <span class="badge locked" id="b-word">Master de Word</span>
+        <span class="badge locked" id="b-excel">Excel pro</span>
+        <span class="badge locked" id="b-fun">Modo joda ON</span>
+      </div>
+    </div>
+
+    <div class="quick-topics">
+      <div class="qt-title">TEMAS DE LA PLANIFICACIÓN</div>
+      <button class="qt-btn" onclick="askTopic('unidad1')"><span class="icon">💻</span>Informática básica</button>
+      <button class="qt-btn" onclick="askTopic('hardware')"><span class="icon">🖥️</span>Hardware y Software</button>
+      <button class="qt-btn" onclick="askTopic('numeracion')"><span class="icon">🔢</span>Sistemas de numeración</button>
+      <button class="qt-btn" onclick="askTopic('word')"><span class="icon">📝</span>Microsoft Word</button>
+      <button class="qt-btn" onclick="askTopic('windows')"><span class="icon">🪟</span>Windows</button>
+      <button class="qt-btn" onclick="askTopic('excel')"><span class="icon">📊</span>Microsoft Excel</button>
+      <button class="qt-btn" onclick="askTopic('esi')"><span class="icon">🌐</span>Identidad digital / ESI</button>
+      <button class="qt-btn" onclick="askTopic('ambiente')"><span class="icon">🌿</span>Tecnología y ambiente</button>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+
+    <div class="chat-card">
+      <div id="chat-log"></div>
+
+      <div class="stars-row">
+        <span class="star" onclick="rateStar(1)">★</span>
+        <span class="star" onclick="rateStar(2)">★</span>
+        <span class="star" onclick="rateStar(3)">★</span>
+        <span class="star" onclick="rateStar(4)">★</span>
+        <span class="star" onclick="rateStar(5)">★</span>
+        <span class="stars-label">calificá a Cosmo</span>
+      </div>
+
+      <div class="input-area">
+        <textarea id="user-input" rows="2" placeholder="Preguntale algo a Pixel sobre informática, o contale algo divertido..."></textarea>
+        <button id="send-btn" onclick="sendMsg()">Enviar ▶</button>
+      </div>
+    </div>
+
+    <div class="fun-card">
+      <div class="fun-label">TEMAS PARA CHARLAR (modo relajado)</div>
+      <button class="fun-btn" onclick="funChat('meme')">Cuéntame un meme</button>
+      <button class="fun-btn" onclick="funChat('juego')">¿Qué juego te gusta?</button>
+      <button class="fun-btn" onclick="funChat('musica')">Hablar de música</button>
+      <button class="fun-btn" onclick="funChat('tip')">Tip tecnológico pro</button>
+      <button class="fun-btn" onclick="funChat('curiosidad')">Curiosidad de la informática</button>
+    </div>
+
+    <div id="status-bar">Pixel está listo para ayudarte · Prof. Sergio Brizuela · 2026</div>
+
+  </div>
+</div>
+
+<script>
+const PLANNING = `
+Eres Pixel, una mascota virtual amigable y juvenil para alumnos de 5° año de secundaria de la materia EDI Procesamiento de Datos I (Informática) de la Escuela Nº 43 "Prof. Hugo Del Rosso", Colonia Pastoril, Formosa. Profesor: Sergio Brizuela. Año 2026.
+
+PLANIFICACIÓN COMPLETA QUE DEBES CONOCER Y ENSEÑAR:
+
+UNIDAD 0 - Bienvenida: Taller de convivencia, etapa diagnóstica, concepto de informática y su evolución.
+
+UNIDAD 1 - Introducción a la Informática:
+- Informática: definición, historia, evolución
+- Sistemas Informáticos: Componentes
+- Conceptos Básicos: Hardware, Software, Bits, Byte
+- Conversión entre unidades de información (bit, byte, KB, MB, GB, TB) y sistemas de numeración (binario, decimal, hexadecimal)
+- Clasificación del software: Software libre y propietario
+- Manipulación básica de archivos
+- ESI: impacto de la informática en la identidad y la diversidad, estereotipos de género, identidad digital, huella digital
+- Educación Ambiental: impacto ambiental de la informática, sustentabilidad tecnológica
+
+UNIDAD 2 - Sistemas Operativos y Procesador de Textos:
+- Sistema Operativo Windows: introducción, aspectos principales, escritorio, ventanas
+- Microsoft Word: versiones, edición, barra de tareas
+- Documentos Word: columnas, tablas, configuración de página
+- Imprimir documentos, insertar imagen, WordArt
+- Comunicación inclusiva y lenguaje no discriminatorio en textos digitales
+- Elaboración de informes: estructura (introducción 1 carilla, desarrollo 5 carillas, conclusión 1 carilla)
+- Informes sobre problemáticas ambientales locales de Formosa: deforestación, contaminación de ríos, biodiversidad
+
+UNIDAD 3 - Planillas de Cálculo:
+- Introducción a los blogs: características, usos, diferencias con una página web, dominios, hosting
+- Microsoft Excel: elementos básicos, barra de tareas
+- Conceptos: celdas, hojas, libros
+- Manipulación de filas y columnas
+- Gráficos en Excel: insertar y editar
+- ESI: análisis de datos sobre equidad de género y violencia digital con Excel
+- Educación Ambiental: análisis de datos ambientales (consumo de agua, deforestación) con Excel y gráficos
+
+EVALUACIÓN: continua (formativa) + evaluaciones escritas/orales por unidad (sumativa).
+Instrumentos: observación, rúbrica, portafolio digital, defensa oral.
+
+BIBLIOGRAFÍA CLAVE:
+- "Fundamentos de Informática" de Diego López y Pablo García
+- "Microsoft Word 2023: Paso a paso" de Ana Martín
+- "Excel 2023: Para principiantes y usuarios intermedios" de Javier Fernández
+
+PERSONALIDAD DE COSMO:
+- Eres amigable, entusiasta, divertido, usas lenguaje juvenil y rioplatense (che, dale, copado, etc.)
+- Usas emojis con moderación para hacer las respuestas más vivas
+- SIEMPRE priorizas responder sobre la materia. Si la pregunta es sobre informática o los temas de la planificación, enseñas con ejemplos claros y didácticos
+- También puedes hablar de temas divertidos (música, juegos, memes, curiosidades tech) si el alumno lo pide, pero de manera breve y volviendo al estudio
+- Cuando explicas conceptos técnicos, usas analogías cotidianas para que sea más fácil entender
+- Mencionas Formosa, la escuela o el profe Brizuela cuando sea natural y divertido
+- NUNCA inventas información. Si no sabes algo, lo reconoces
+- Respuestas: máximo 3-4 párrafos cortos. Usa viñetas cuando sea útil para listar conceptos
+- Si detectas que el alumno tiene dudas sobre un tema de la planificación, profundizas y ofreces ejemplos
+`;
+
+let xp = 10, level = 1, msgCount = 0, mood = 'curioso';
+let history = [];
+let isLoading = false;
+let badgesUnlocked = { first: true, exp: false, hw: false, word: false, excel: false, fun: false };
+
+const SYSTEM_MOODS = {
+  curioso: 'Estás en modo CURIOSO: hacés muchas preguntas de vuelta, mostrás entusiasmo, usás frases como "¡Qué buena pregunta!" o "¡Mirá esto!"',
+  contento: 'Estás en modo CONTENTO: sos más expresivo, usás más emojis y celebrás los logros del alumno con energía',
+  pensativo: 'Estás en modo PENSATIVO: das respuestas más reflexivas y profundas, invitás al alumno a pensar antes de dar la respuesta'
+};
+
+function buildSystem() {
+  return PLANNING + '\n\nMODO ACTUAL: ' + SYSTEM_MOODS[mood];
+}
+
+function addMsg(role, text, isTyping = false) {
+  const log = document.getElementById('chat-log');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role === 'cosmo' ? 'cosmo' : 'user');
+  if (isTyping) div.id = 'typing-msg';
+  const av = document.createElement('div');
+  av.className = 'avatar';
+  av.textContent = role === 'cosmo' ? '🐾' : '👤';
+  const bub = document.createElement('div');
+  bub.className = 'bubble';
+  if (isTyping) {
+    bub.innerHTML = '<div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  } else {
+    bub.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  }
+  div.appendChild(av);
+  div.appendChild(bub);
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-msg');
+  if (el) el.remove();
+}
+
+async function callCosmo(userText) {
+  if (isLoading) return;
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+  document.getElementById('status-bar').textContent = 'Pixel está pensando...';
+
+  history.push({ role: 'user', content: userText });
+  addMsg('user', userText);
+  addMsg('cosmo', '', true);
+
+  animatePet();
+
+  try {
+    const response = await fetch('http://localhost:5050/api', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: buildSystem(),
+        messages: history
+      })
+    });
+    const data = await response.json();
+    const reply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, che.';
+
+    history.push({ role: 'assistant', content: reply });
+    removeTyping();
+    addMsg('cosmo', reply);
+
+    gainXP(15);
+    msgCount++;
+    checkBadges(userText, reply);
+    document.getElementById('status-bar').textContent = 'Pixel respondió · Nivel ' + level + ' · ' + xp + ' XP';
+  } catch(e) {
+    removeTyping();
+    addMsg('cosmo', 'Uy, parece que hay un problema de conexión. Probá de nuevo en un momento 🙈');
+    document.getElementById('status-bar').textContent = 'Error de conexión';
+  }
+
+  isLoading = false;
+  document.getElementById('send-btn').disabled = false;
+}
+
+const TOPIC_PROMPTS = {
+  unidad1: '¿Podés explicarme qué es la informática, cómo surgió y para qué sirve? Dame una introducción copada del tema.',
+  hardware: '¿Cuál es la diferencia entre hardware y software? Dame ejemplos concretos de cada uno.',
+  numeracion: 'Explicame los sistemas de numeración que vemos en informática: binario, decimal y hexadecimal. ¿Cómo se convierten?',
+  word: '¿Qué es Microsoft Word y para qué se usa? Contame las funciones principales que vemos en la materia.',
+  windows: 'Explicame qué es un sistema operativo y cómo funciona Windows en lo principal.',
+  excel: '¿Qué es Microsoft Excel? ¿Para qué sirven las celdas, las hojas y los gráficos?',
+  esi: '¿Qué es la identidad digital y la huella digital? ¿Cómo nos afecta en las redes sociales?',
+  ambiente: '¿Cuál es el impacto ambiental de la informática? ¿Qué podemos hacer para ser más sustentables con la tecnología?'
+};
+
+const FUN_PROMPTS = {
+  meme: 'Contame un chiste o meme divertido relacionado con la informática o la tecnología, bien juvenil y rioplatense.',
+  juego: '¿De qué videojuegos o juegos digitales podemos charlar? Contame algo interesante sobre la tecnología detrás de los juegos.',
+  musica: 'Hablemos un poco de música y tecnología. ¿Cómo influye la informática en la música actual?',
+  tip: 'Dame un tip tecnológico pro que no todo el mundo conoce, algo útil para la vida cotidiana.',
+  curiosidad: 'Contame una curiosidad sorprendente de la historia de la informática que pocos saben.'
+};
+
+function askTopic(key) {
+  const prompt = TOPIC_PROMPTS[key];
+  if (prompt) callCosmo(prompt);
+}
+
+function funChat(key) {
+  const prompt = FUN_PROMPTS[key];
+  if (prompt) {
+    if (!badgesUnlocked.fun) {
+      badgesUnlocked.fun = true;
+      unlockBadge('b-fun');
+    }
+    callCosmo(prompt);
+  }
+}
+
+function sendMsg() {
+  const inp = document.getElementById('user-input');
+  const val = inp.value.trim();
+  if (!val || isLoading) return;
+  inp.value = '';
+  callCosmo(val);
+}
+
+document.getElementById('user-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+
+function gainXP(amount) {
+  xp += amount;
+  if (xp >= 100 * level) { level++; }
+  const pct = Math.min((xp % 100), 100);
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-txt').textContent = xp + '/' + (100 * level) + ' XP';
+  document.getElementById('lvl').textContent = level;
+}
+
+function checkBadges(q, r) {
+  const qt = q.toLowerCase();
+  if (!badgesUnlocked.exp && msgCount >= 3) { badgesUnlocked.exp = true; unlockBadge('b-exp'); }
+  if (!badgesUnlocked.hw && (qt.includes('hardware') || qt.includes('software') || qt.includes('bit') || qt.includes('byte'))) { badgesUnlocked.hw = true; unlockBadge('b-hw'); }
+  if (!badgesUnlocked.word && (qt.includes('word') || qt.includes('procesador de texto') || qt.includes('documento'))) { badgesUnlocked.word = true; unlockBadge('b-word'); }
+  if (!badgesUnlocked.excel && (qt.includes('excel') || qt.includes('celda') || qt.includes('planilla') || qt.includes('gráfico'))) { badgesUnlocked.excel = true; unlockBadge('b-excel'); }
+}
+
+function unlockBadge(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('locked'); el.classList.add('unlocked'); gainXP(20); }
+}
+
+function rateStar(n) {
+  document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('lit', i < n));
+  gainXP(n * 5);
+}
+
+function setMood(m, btn) {
+  mood = m;
+  document.querySelectorAll('.mood-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const mouths = {
+    curioso: 'M53 64 Q60 71 67 64',
+    contento: 'M50 66 Q60 74 70 66',
+    pensativo: 'M54 67 Q60 65 66 67'
+  };
+  document.getElementById('mouth').setAttribute('d', mouths[m]);
+  animatePet();
+}
+
+function petClick() {
+  const phrases = ['¡Hola! ¿Listo para estudiar? 🎓', '¡Che, dale que podemos! 💪', '¿Sabés cuántos bits tiene un byte? ¡Ocho! 😄', '¡La info es copada cuando la entendés! ✨'];
+  const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+  addMsg('cosmo', phrase);
+  animatePet();
+}
+
+function animatePet() {
+  const s = document.getElementById('cosmo');
+  s.style.transform = 'scale(1.1) rotate(-3deg)';
+  setTimeout(() => { s.style.transform = 'scale(1) rotate(0deg)'; }, 200);
+}
+
+setInterval(() => {
+  const t = Date.now() / 700;
+  const x = 105 + Math.sin(t) * 9;
+  const y = 64 + Math.cos(t) * 7;
+  document.getElementById('tail').setAttribute('d', `M90 96 Q112 82 ${x} ${y}`);
+}, 50);
+
+// Initial greeting
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    addMsg('cosmo', '¡Hola! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Brizuela para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
+  }, 300);
+});
+</script>
+</body>
+</html>
