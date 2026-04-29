@@ -503,7 +503,7 @@ async function callCosmo(userText) {
   animatePet();
 
   try {
-    const response = await fetch('http://localhost:5050/api', {
+    const response = await fetch('https://pixel-edi.onrender.com/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
