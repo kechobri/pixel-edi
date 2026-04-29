@@ -369,7 +369,7 @@
         <span class="star" onclick="rateStar(3)">★</span>
         <span class="star" onclick="rateStar(4)">★</span>
         <span class="star" onclick="rateStar(5)">★</span>
-        <span class="stars-label">calificá a Cosmo</span>
+        <span class="stars-label">calificá a Pixel</span>
       </div>
 
       <div class="input-area">
@@ -387,14 +387,14 @@
       <button class="fun-btn" onclick="funChat('curiosidad')">Curiosidad de la informática</button>
     </div>
 
-    <div id="status-bar">Pixel está listo para ayudarte · Prof. Sergio Brizuela · 2026</div>
+    <div id="status-bar">Pixel está listo para ayudarte · Prof. Kecho · 2026</div>
 
   </div>
 </div>
 
 <script>
 const PLANNING = `
-Eres Pixel, una mascota virtual amigable y juvenil para alumnos de 5° año de secundaria de la materia EDI Procesamiento de Datos I (Informática) de la Escuela Nº 43 "Prof. Hugo Del Rosso", Colonia Pastoril, Formosa. Profesor: Sergio Brizuela. Año 2026.
+Eres Pixel, una mascota virtual amigable y juvenil para alumnos de 5° año de secundaria de la materia EDI Procesamiento de Datos I (Informática) de la Escuela Nº 43 "Prof. Hugo Del Rosso", Colonia Pastoril, Formosa. Profesor: Kecho. Año 2026.
 
 PLANIFICACIÓN COMPLETA QUE DEBES CONOCER Y ENSEÑAR:
 
@@ -436,13 +436,13 @@ BIBLIOGRAFÍA CLAVE:
 - "Microsoft Word 2023: Paso a paso" de Ana Martín
 - "Excel 2023: Para principiantes y usuarios intermedios" de Javier Fernández
 
-PERSONALIDAD DE COSMO:
+PERSONALIDAD DE PIXEL:
 - Eres amigable, entusiasta, divertido, usas lenguaje juvenil y rioplatense (che, dale, copado, etc.)
 - Usas emojis con moderación para hacer las respuestas más vivas
 - SIEMPRE priorizas responder sobre la materia. Si la pregunta es sobre informática o los temas de la planificación, enseñas con ejemplos claros y didácticos
 - También puedes hablar de temas divertidos (música, juegos, memes, curiosidades tech) si el alumno lo pide, pero de manera breve y volviendo al estudio
 - Cuando explicas conceptos técnicos, usas analogías cotidianas para que sea más fácil entender
-- Mencionas Formosa, la escuela o el profe Brizuela cuando sea natural y divertido
+- Mencionas Formosa, la escuela o el profe Kecho cuando sea natural y divertido
 - NUNCA inventas información. Si no sabes algo, lo reconoces
 - Respuestas: máximo 3-4 párrafos cortos. Usa viñetas cuando sea útil para listar conceptos
 - Si detectas que el alumno tiene dudas sobre un tema de la planificación, profundizas y ofreces ejemplos
@@ -490,6 +490,25 @@ function removeTyping() {
   if (el) el.remove();
 }
 
+async function fetchConReintentos(body, intentos = 4, demora = 5000) {
+  for (let i = 1; i <= intentos; i++) {
+    try {
+      const response = await fetch('https://pixel-edi.onrender.com/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (response.ok) return response;
+      throw new Error('status ' + response.status);
+    } catch(e) {
+      if (i === intentos) throw e;
+      const seg = Math.round((demora * i) / 1000);
+      document.getElementById('status-bar').textContent = 'Pixel se está despertando... reintentando en ' + seg + 's (' + i + '/' + intentos + ')';
+      await new Promise(r => setTimeout(r, demora * i));
+    }
+  }
+}
+
 async function callCosmo(userText) {
   if (isLoading) return;
   isLoading = true;
@@ -503,15 +522,11 @@ async function callCosmo(userText) {
   animatePet();
 
   try {
-    const response = await fetch('https://pixel-edi.onrender.com/api', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: buildSystem(),
-        messages: history
-      })
+    const response = await fetchConReintentos({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: buildSystem(),
+      messages: history
     });
     const data = await response.json();
     const reply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, che.';
@@ -526,8 +541,8 @@ async function callCosmo(userText) {
     document.getElementById('status-bar').textContent = 'Pixel respondió · Nivel ' + level + ' · ' + xp + ' XP';
   } catch(e) {
     removeTyping();
-    addMsg('cosmo', 'Uy, parece que hay un problema de conexión. Probá de nuevo en un momento 🙈');
-    document.getElementById('status-bar').textContent = 'Error de conexión';
+    addMsg('cosmo', '😴 Parece que el servidor tardó demasiado en despertar. Esperá unos segundos y volvé a intentarlo, che.');
+    document.getElementById('status-bar').textContent = 'Sin conexión — intentá de nuevo en unos segundos';
   }
 
   isLoading = false;
@@ -644,7 +659,7 @@ setInterval(() => {
 // Initial greeting
 window.addEventListener('load', () => {
   setTimeout(() => {
-    addMsg('cosmo', '¡Hola! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Brizuela para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
+    addMsg('cosmo', '¡Hola! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Kecho para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
   }, 300);
 });
 </script>
