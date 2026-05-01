@@ -273,9 +273,96 @@
     .left-panel { flex-direction: row; flex-wrap: wrap; }
     .pet-card { flex: 1; min-width: 160px; }
   }
+
+  /* ---- LOGIN ---- */
+  #login-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(108,78,246,0.1) 0%, transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(45,212,191,0.1) 0%, transparent 45%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #login-overlay.oculto { display: none; }
+  .login-card {
+    background: white; border-radius: 28px;
+    border: 1.5px solid var(--border);
+    padding: 36px 32px; max-width: 380px; width: 90%;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+    box-shadow: 0 8px 40px rgba(108,78,246,0.12);
+  }
+  .login-title { font-size: 22px; font-weight: 800; color: var(--purple); text-align: center; }
+  .login-sub { font-size: 12px; color: var(--text-muted); text-align: center; font-family: "Space Mono", monospace; }
+  .login-field { width: 100%; display: flex; flex-direction: column; gap: 5px; }
+  .login-field label { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
+  .login-field input {
+    width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); font-size: 14px; font-family: "Nunito", sans-serif;
+    font-weight: 600; background: var(--bg); color: var(--text); transition: border-color 0.15s;
+  }
+  .login-field input:focus { outline: none; border-color: var(--purple); }
+  #login-btn {
+    width: 100%; padding: 12px; border-radius: var(--radius-sm);
+    background: var(--purple); color: white; border: none;
+    font-size: 15px; font-weight: 800; cursor: pointer;
+    font-family: "Nunito", sans-serif; transition: all 0.15s;
+  }
+  #login-btn:hover { background: #5B3FE4; transform: translateY(-1px); }
+  #login-error { font-size: 12px; color: var(--pink); font-weight: 700; text-align: center; display: none; }
+  .login-user-badge {
+    font-size: 11px; font-family: "Space Mono", monospace;
+    color: var(--purple); background: var(--purple-light);
+    padding: 3px 10px; border-radius: 99px; border: 1px solid #D4CAFF; text-align: center;
+  }
+  #clear-btn {
+    font-size: 11px; padding: 4px 12px; border-radius: 99px;
+    border: 1.5px solid var(--border); background: white;
+    cursor: pointer; color: var(--text-muted); font-weight: 700;
+    font-family: "Nunito", sans-serif; transition: all 0.15s; align-self: flex-end;
+  }
+  #clear-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-light); }
 </style>
 </head>
 <body>
+
+<div id="login-overlay">
+  <div class="login-card">
+    <svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+      <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+      <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
+      <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
+      <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
+      <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
+      <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+      <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+      <circle cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
+      <circle cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
+      <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
+      <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
+      <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
+      <path d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
+      <ellipse cx="40" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
+      <ellipse cx="80" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
+      <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
+      <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
+      <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
+      <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
+    </svg>
+    <div class="login-title">¡Hola! Soy Pixel 🐾</div>
+    <div class="login-sub">E.P.E.S. N° 43 · EDI Procesamiento de Datos I · 2026</div>
+    <div class="login-field">
+      <label>TU NOMBRE</label>
+      <input type="text" id="login-nombre" placeholder="Ej: Juan Pérez" autocomplete="off"/>
+    </div>
+    <div class="login-field">
+      <label>CÓDIGO DE ACCESO</label>
+      <input type="password" id="login-codigo" placeholder="Ingresá el código"/>
+    </div>
+    <div id="login-error">❌ Código incorrecto. Pedíselo al profe Kecho.</div>
+    <button id="login-btn" onclick="doLogin()">Entrar ▶</button>
+  </div>
+</div>
 
 <h1>· PIXEL · EDI Procesamiento de Datos I ·</h1>
 <p class="subtitle">E.P.E.S. N° 43 "Prof. Hugo Del Rosso" · 5° año Div. I · 2026</p>
@@ -361,6 +448,7 @@
   <div class="right-panel">
 
     <div class="chat-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span class="login-user-badge" id="user-badge">👤 Invitado</span><button id="clear-btn" onclick="clearChat()">🗑 Limpiar chat</button></div>
       <div id="chat-log"></div>
 
       <div class="stars-row">
@@ -656,12 +744,37 @@ setInterval(() => {
   document.getElementById('tail').setAttribute('d', `M90 96 Q112 82 ${x} ${y}`);
 }, 50);
 
-// Initial greeting
-window.addEventListener('load', () => {
+
+const CODIGO_ACCESO = 'edi2026';
+let nombreAlumno = '';
+
+function doLogin() {
+  const nombre = document.getElementById('login-nombre').value.trim();
+  const codigo = document.getElementById('login-codigo').value.trim();
+  const err = document.getElementById('login-error');
+  if (!nombre) { err.style.display = 'block'; err.textContent = '❌ Escribí tu nombre primero.'; return; }
+  if (codigo !== CODIGO_ACCESO) { err.style.display = 'block'; err.textContent = '❌ Código incorrecto. Pedíselo al profe Kecho.'; return; }
+  nombreAlumno = nombre;
+  document.getElementById('login-overlay').classList.add('oculto');
+  document.getElementById('user-badge').textContent = '👤 ' + nombre;
   setTimeout(() => {
-    addMsg('cosmo', '¡Hola! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Kecho para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
-  }, 300);
+    addMsg('cosmo', '¡Hola, **' + nombre + '**! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Kecho para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
+  }, 200);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !document.getElementById('login-overlay').classList.contains('oculto')) {
+    doLogin();
+  }
 });
+
+function clearChat() {
+  if (!confirm('¿Limpiamos el chat? Se borra la conversación actual.')) return;
+  document.getElementById('chat-log').innerHTML = '';
+  history = [];
+  addMsg('cosmo', '¡Chat limpio! ✨ ¿En qué te puedo ayudar, ' + (nombreAlumno || 'che') + '?');
+}
+
 </script>
 </body>
 </html>
