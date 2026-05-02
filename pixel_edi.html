@@ -840,7 +840,8 @@ async function callCosmo(userText) {
       messages: history
     });
     const data = await response.json();
-    const reply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, capo.';
+    const rawReply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, capo.';
+    const reply = filtrarChe(rawReply);
 
     replied = true;
     history.push({ role: 'assistant', content: reply });
@@ -1012,6 +1013,17 @@ function clearChat() {
   addMsg('cosmo', '¡Chat limpio! ✨ ¿En qué te puedo ayudar, ' + (nombreAlumno || 'che') + '?');
 }
 
+
+// ── FILTRO "che" ──
+const cheReemplazos = ['capo', 'rey', 'reina', 'pa', 'hermano', 'hermana'];
+let cheIdx = 0;
+function filtrarChe(texto) {
+  return texto.replace(/\bche\b/gi, () => {
+    const r = cheReemplazos[cheIdx % cheReemplazos.length];
+    cheIdx++;
+    return r;
+  });
+}
 
 // ── DARK MODE ──
 function toggleDark() {
