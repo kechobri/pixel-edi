@@ -795,21 +795,25 @@ function removeTyping() {
   if (el) el.remove();
 }
 
-async function fetchConReintentos(body, intentos = 4, demora = 5000) {
+async function fetchConReintentos(body, intentos = 5, demora = 8000) {
   for (let i = 1; i <= intentos; i++) {
     try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 25000);
       const response = await fetch('https://pixel-edi.onrender.com/api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        signal: controller.signal
       });
+      clearTimeout(timer);
       if (response.ok) return response;
       throw new Error('status ' + response.status);
     } catch(e) {
       if (i === intentos) throw e;
-      const seg = Math.round((demora * i) / 1000);
-      document.getElementById('status-bar').textContent = 'Pixel se está despertando... reintentando en ' + seg + 's (' + i + '/' + intentos + ')';
-      await new Promise(r => setTimeout(r, demora * i));
+      document.getElementById('status-bar').textContent =
+        'Pixel se está despertando... intento ' + (i+1) + ' de ' + intentos;
+      await new Promise(r => setTimeout(r, demora));
     }
   }
 }
@@ -826,6 +830,8 @@ async function callCosmo(userText) {
 
   animatePet();
 
+  let replied = false;
+
   try {
     const response = await fetchConReintentos({
       model: 'claude-sonnet-4-20250514',
@@ -834,10 +840,14 @@ async function callCosmo(userText) {
       messages: history
     });
     const data = await response.json();
-    const reply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, che.';
+    const reply = data.content && data.content[0] ? data.content[0].text : 'Uy, algo falló. Intentalo de nuevo, capo.';
 
+    replied = true;
     history.push({ role: 'assistant', content: reply });
     removeTyping();
+    // Eliminar mensaje de error si se mostró durante los reintentos
+    const errMsg = document.getElementById('error-msg');
+    if (errMsg) errMsg.remove();
     addMsg('cosmo', reply);
 
     gainXP(15);
@@ -845,9 +855,12 @@ async function callCosmo(userText) {
     checkBadges(userText, reply);
     document.getElementById('status-bar').textContent = 'Pixel respondió · Nivel ' + level + ' · ' + xp + ' XP';
   } catch(e) {
-    removeTyping();
-    addMsg('cosmo', '😴 Parece que el servidor tardó demasiado en despertar. Esperá unos segundos y volvé a intentarlo, che.');
-    document.getElementById('status-bar').textContent = 'Sin conexión — intentá de nuevo en unos segundos';
+    if (!replied) {
+      removeTyping();
+      const errDiv = addMsg('cosmo', '😴 El servidor tardó demasiado en despertar. Esperá unos segundos y volvé a intentarlo, rey/reina.');
+      errDiv.id = 'error-msg';
+      document.getElementById('status-bar').textContent = 'Sin conexión — intentá de nuevo en unos segundos';
+    }
   }
 
   isLoading = false;
