@@ -331,6 +331,7 @@
   }
   .dark .login-card { background: #1E1B2E; }
   .dark #user-input { background: #13111F; }
+  .dark #login-genero { background: #13111F; }
   .dark .qt-btn, .dark .mood-pill, .dark .fun-btn, .dark #clear-btn { background: #1E1B2E; }
   .dark .msg.cosmo .bubble { background: #2A2250; border-color: #3D3580; }
   .dark .msg.user .bubble { background: #0F3330; border-color: #1A5C54; }
@@ -510,6 +511,15 @@
     <div class="login-field">
       <label>TU NOMBRE</label>
       <input type="text" id="login-nombre" placeholder="Ej: Juan Pérez" autocomplete="off"/>
+    </div>
+    <div class="login-field">
+      <label>SOY</label>
+      <select id="login-genero" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);font-size:14px;font-family:Nunito,sans-serif;font-weight:600;background:var(--bg);color:var(--text);">
+        <option value="auto">Detectar por mi nombre</option>
+        <option value="m">Varón</option>
+        <option value="f">Mujer</option>
+        <option value="n">Prefiero no decir</option>
+      </select>
     </div>
     <div class="login-field">
       <label>CÓDIGO DE ACCESO</label>
@@ -979,10 +989,24 @@ setInterval(() => {
 
 const CODIGO_ACCESO = 'edi2026';
 let nombreAlumno = '';
+let generoAlumno = 'n'; // 'm', 'f', 'n'
+
+// Nombres comunes para detección automática
+const NOMBRES_M = ['juan','lucas','mateo','santiago','benjamín','benjamin','nicolás','nicolas','facundo','ezequiel','joaquín','joaquin','martin','martín','diego','rodrigo','franco','leandro','gustavo','pablo','carlos','daniel','andrés','andres','mario','sergio','gabriel','federico','alejandro','maximiliano','maximo','máximo','osvaldo','hugo','raul','raúl','ariel','damian','damián','hernan','hernán','cristian','emilio','jorge','alberto','roberto','luis','miguel','ignacio','valentín','valentin','thiago','lautaro','agustín','agustin','kevin','brian','alan','ivan','iván','ramiro','walter','gustavo','claudio','marcelo','adrián','adrian','leonel','lionel','nahuel','alexis','elias','elías','bautista','tobias','tobías','tomas','tomás','franco','renato','jeremías','jeremias'];
+const NOMBRES_F = ['maria','maría','sofia','sofía','valentina','camila','lucía','lucia','martina','agustina','julieta','florencia','milagros','romina','paola','vanesa','vanessa','natalia','carolina','claudia','silvana','patricia','verónica','veronica','alejandra','fernanda','marcela','adriana','mónica','monica','lorena','soledad','débora','debora','susana','roxana','sabrina','brenda','micaela','melanie','celeste','daiana','dayana','evelyn','noelia','estefania','estefanía','mariela','graciela','ana','rosa','elena','beatriz','cristina','silvia','norma','marta','nora','emilia','isabela','isabella','antonella','abril','bianca','delfina','amparo','zoe','victoria','giuliana','magali','magalí','lourdes','jimena','gisela','carla','claudia','anahi','anahí','yamila','nadia','nancy','viviana','karina','marina','clara'];
+
+function detectarGenero(nombre) {
+  const primero = nombre.trim().split(' ')[0].toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (NOMBRES_M.some(n => n.normalize('NFD').replace(/[\u0300-\u036f]/g,'') === primero)) return 'm';
+  if (NOMBRES_F.some(n => n.normalize('NFD').replace(/[\u0300-\u036f]/g,'') === primero)) return 'f';
+  return 'n';
+}
 
 function doLogin() {
   const nombre = document.getElementById('login-nombre').value.trim();
   const codigo = document.getElementById('login-codigo').value.trim();
+  const generoSel = document.getElementById('login-genero').value;
   const err = document.getElementById('login-error');
   if (!nombre) { err.style.display = 'block'; err.textContent = '❌ Escribí tu nombre primero.'; return; }
   if (codigo === 'kecho2026') {
@@ -993,10 +1017,13 @@ function doLogin() {
   }
   if (codigo !== CODIGO_ACCESO) { err.style.display = 'block'; err.textContent = '❌ Código incorrecto. Pedíselo al profe Kecho.'; return; }
   nombreAlumno = nombre;
+  generoAlumno = generoSel === 'auto' ? detectarGenero(nombre) : generoSel;
+  actualizarApodos();
   document.getElementById('login-overlay').classList.add('oculto');
   document.getElementById('user-badge').textContent = '👤 ' + nombre;
+  const saludo = generoAlumno === 'f' ? 'reina' : generoAlumno === 'm' ? 'rey' : 'capo';
   setTimeout(() => {
-    addMsg('cosmo', '¡Hola, **' + nombre + '**! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Kecho para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas! ¿Por dónde arrancamos?');
+    addMsg('cosmo', '¡Hola, **' + nombre + '**! 👋 Soy **Pixel**, tu compañero de EDI Procesamiento de Datos I.\n\nEstoy cargado con toda la planificación de la materia del profe Kecho para 2026 🎓\n\nPuedo ayudarte con los temas de las 3 unidades: introducción a la informática, Word y Windows, y Excel. ¡También podemos charlar de cosas divertidas, ' + saludo + '! ¿Por dónde arrancamos?');
   }, 200);
 }
 
@@ -1010,20 +1037,26 @@ function clearChat() {
   if (!confirm('¿Limpiamos el chat? Se borra la conversación actual.')) return;
   document.getElementById('chat-log').innerHTML = '';
   history = [];
-  addMsg('cosmo', '¡Chat limpio! ✨ ¿En qué te puedo ayudar, ' + (nombreAlumno || 'che') + '?');
+  const ap = generoAlumno === 'f' ? 'reina' : generoAlumno === 'm' ? 'rey' : 'capo'; addMsg('cosmo', '¡Chat limpio! ✨ ¿En qué te puedo ayudar, ' + (nombreAlumno || ap) + '?');
 }
 
 
-// ── FILTRO "che" ──
-const cheReemplazos = ['capo', 'rey', 'reina', 'pa', 'hermano', 'hermana'];
+// ── FILTRO "che" + APODOS SEGÚN GÉNERO ──
 let cheIdx = 0;
+function getApodos() {
+  if (generoAlumno === 'm') return ['rey', 'capo', 'pa', 'hermano', 'pibe'];
+  if (generoAlumno === 'f') return ['reina', 'genia', 'ma', 'piba'];
+  return ['capo', 'pa', 'hermano', 'hermana', 'pibe'];
+}
 function filtrarChe(texto) {
+  const apodos = getApodos();
   return texto.replace(/\bche\b/gi, () => {
-    const r = cheReemplazos[cheIdx % cheReemplazos.length];
+    const r = apodos[cheIdx % apodos.length];
     cheIdx++;
     return r;
   });
 }
+function actualizarApodos() { cheIdx = 0; }
 
 // ── DARK MODE ──
 function toggleDark() {
