@@ -321,9 +321,165 @@
     font-family: "Nunito", sans-serif; transition: all 0.15s; align-self: flex-end;
   }
   #clear-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-light); }
+
+  /* ---- MODO OSCURO ---- */
+  body.dark {
+    --bg: #13111F; --card: #1E1B2E; --text: #E9E6FF;
+    --text-muted: #9CA3AF; --border: #2E2A4A;
+    --purple-light: #2A2250; --teal-light: #0F3330;
+    --pink-light: #3A1128; --amber-light: #3A2800;
+  }
+  .dark .login-card { background: #1E1B2E; }
+  .dark #user-input { background: #13111F; }
+  .dark .qt-btn, .dark .mood-pill, .dark .fun-btn, .dark #clear-btn { background: #1E1B2E; }
+  .dark .msg.cosmo .bubble { background: #2A2250; border-color: #3D3580; }
+  .dark .msg.user .bubble { background: #0F3330; border-color: #1A5C54; }
+  #dark-toggle {
+    position: fixed; top: 14px; right: 16px; z-index: 50;
+    font-size: 18px; background: none; border: none; cursor: pointer;
+    padding: 4px 8px; border-radius: 8px; transition: transform 0.2s;
+  }
+  #dark-toggle:hover { transform: scale(1.2); }
+
+  /* ---- PANTALLA DE CARGA ---- */
+  #loading-screen {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px;
+    transition: opacity 0.5s;
+  }
+  #loading-screen.oculto { opacity: 0; pointer-events: none; }
+  .loading-pet { animation: floatPet 1.5s ease-in-out infinite; }
+  @keyframes floatPet { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .loading-bar-wrap { width: 180px; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .loading-bar { height: 100%; background: linear-gradient(90deg, var(--purple), var(--teal)); border-radius: 99px; animation: loadFill 2s ease forwards; }
+  @keyframes loadFill { from{width:0%} to{width:100%} }
+  .loading-text { font-size: 13px; color: var(--text-muted); font-family: "Space Mono", monospace; }
+
+  /* ---- BURBUJAS MEJORADAS ---- */
+  .msg-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; padding: 0 2px; }
+  .msg.cosmo .msg-time { text-align: left; }
+  .msg.user .msg-time { text-align: right; }
+  .msg { flex-direction: column; }
+  .msg-row { display: flex; gap: 8px; align-items: flex-start; }
+  .msg.user .msg-row { flex-direction: row-reverse; }
+
+  /* ---- PANEL PROFESOR ---- */
+  #panel-profe {
+    position: fixed; inset: 0; z-index: 150; background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #panel-profe.oculto { display: none; }
+  .profe-card {
+    background: var(--card); border-radius: 24px; border: 1.5px solid var(--border);
+    padding: 28px; max-width: 480px; width: 92%; max-height: 80vh; overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  }
+  .profe-title { font-size: 18px; font-weight: 800; color: var(--purple); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .profe-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat-box { background: var(--purple-light); border-radius: 12px; padding: 12px; text-align: center; }
+  .stat-num { font-size: 24px; font-weight: 800; color: var(--purple); }
+  .stat-lbl { font-size: 10px; color: var(--text-muted); font-family: "Space Mono", monospace; margin-top: 2px; }
+  .topic-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .topic-bar-label { font-size: 12px; font-weight: 600; color: var(--text); width: 110px; flex-shrink: 0; }
+  .topic-bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .topic-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple-mid)); border-radius: 99px; transition: width 0.6s ease; }
+  .topic-bar-count { font-size: 11px; color: var(--text-muted); font-family: "Space Mono", monospace; width: 24px; text-align: right; }
+  .profe-section { font-size: 11px; font-family: "Space Mono", monospace; color: var(--text-muted); letter-spacing: 0.06em; margin: 14px 0 8px; }
+
+  /* ---- PREGUNTAS FRECUENTES ---- */
+  .faq-card {
+    background: var(--card); border-radius: var(--radius-sm); border: 1.5px solid var(--border); padding: 12px;
+  }
+  .faq-title { font-size: 10px; font-family: "Space Mono", monospace; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.06em; }
+  .faq-item {
+    font-size: 12px; padding: 6px 10px; border-radius: 8px; background: var(--purple-light);
+    color: var(--purple); font-weight: 600; margin-bottom: 5px; cursor: pointer;
+    border: 1px solid #D4CAFF; transition: all 0.15s; line-height: 1.4;
+  }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-item:hover { background: var(--purple); color: white; border-color: var(--purple); }
+  .faq-empty { font-size: 12px; color: var(--text-muted); text-align: center; padding: 8px; }
+
+  /* ---- MODO REPASO ---- */
+  .quiz-card {
+    background: var(--card); border-radius: var(--radius-sm); border: 1.5px solid var(--border); padding: 12px;
+  }
+  .quiz-title { font-size: 10px; font-family: "Space Mono", monospace; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.06em; }
+  .quiz-select {
+    width: 100%; padding: 6px 10px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--bg); color: var(--text);
+    font-family: "Nunito", sans-serif; font-size: 12px; font-weight: 600; margin-bottom: 7px;
+  }
+  #quiz-btn {
+    width: 100%; padding: 8px; border-radius: 8px; background: var(--teal);
+    color: white; border: none; font-size: 13px; font-weight: 800;
+    font-family: "Nunito", sans-serif; cursor: pointer; transition: all 0.15s;
+  }
+  #quiz-btn:hover { background: #22B8A0; transform: translateY(-1px); }
+  .quiz-score { text-align: center; font-size: 12px; font-family: "Space Mono", monospace; color: var(--text-muted); margin-top: 6px; }
+
+  /* ---- BADGE ANIMATION ---- */
+  .badge-toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 300;
+    background: var(--card); border: 1.5px solid var(--purple);
+    border-radius: 16px; padding: 14px 18px; box-shadow: 0 4px 20px rgba(108,78,246,0.25);
+    font-size: 13px; font-weight: 700; color: var(--purple);
+    animation: toastIn 0.4s ease, toastOut 0.4s ease 2.6s forwards;
+    display: flex; align-items: center; gap: 10px;
+  }
+  @keyframes toastIn { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+  @keyframes toastOut { to{transform:translateY(30px);opacity:0} }
 </style>
 </head>
 <body>
+
+<button id="dark-toggle" onclick="toggleDark()" title="Modo oscuro">🌙</button>
+
+<div id="loading-screen">
+  <svg class="loading-pet" width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+    <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
+    <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
+    <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
+    <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
+    <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
+    <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+    <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
+    <circle cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
+    <circle cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
+    <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
+    <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
+    <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
+    <path d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
+    <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
+    <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
+    <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
+    <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
+  </svg>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-text">Despertando a Pixel...</div>
+</div>
+
+
+<div id="panel-profe" class="oculto">
+  <div class="profe-card">
+    <div class="profe-title">
+      📊 Panel del Profesor
+      <button class="profe-close" onclick="cerrarProfe()">✕</button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" id="stat-sesiones">0</div><div class="stat-lbl">Sesiones</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-preguntas">0</div><div class="stat-lbl">Preguntas</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-quiz">0</div><div class="stat-lbl">Repasos</div></div>
+    </div>
+    <div class="profe-section">TEMAS MÁS CONSULTADOS</div>
+    <div id="profe-topics"></div>
+    <div class="profe-section">ÚLTIMAS PREGUNTAS</div>
+    <div id="profe-ultimas"></div>
+  </div>
+</div>
 
 <div id="login-overlay">
   <div class="login-card">
@@ -475,6 +631,24 @@
       <button class="fun-btn" onclick="funChat('curiosidad')">Curiosidad de la informática</button>
     </div>
 
+    <div class="faq-card">
+      <div class="faq-title">💬 PREGUNTAS FRECUENTES DE TUS COMPAÑEROS</div>
+      <div id="faq-list"><div class="faq-empty">Todavía no hay preguntas. ¡Sé el primero!</div></div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-title">🧠 MODO REPASO</div>
+      <select class="quiz-select" id="quiz-unidad">
+        <option value="unidad1">Unidad 1 — Introducción a la Informática</option>
+        <option value="hardware">Hardware y Software</option>
+        <option value="numeracion">Sistemas de Numeración</option>
+        <option value="word">Microsoft Word</option>
+        <option value="windows">Windows</option>
+        <option value="excel">Microsoft Excel</option>
+      </select>
+      <button id="quiz-btn" onclick="iniciarQuiz()">¡Poneme a prueba! 🎯</button>
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
     <div id="status-bar">Pixel está listo para ayudarte · Prof. Kecho · 2026</div>
 
   </div>
@@ -556,9 +730,14 @@ function addMsg(role, text, isTyping = false) {
   const div = document.createElement('div');
   div.className = 'msg ' + (role === 'cosmo' ? 'cosmo' : 'user');
   if (isTyping) div.id = 'typing-msg';
+
+  const row = document.createElement('div');
+  row.className = 'msg-row';
+
   const av = document.createElement('div');
   av.className = 'avatar';
   av.textContent = role === 'cosmo' ? '🐾' : '👤';
+
   const bub = document.createElement('div');
   bub.className = 'bubble';
   if (isTyping) {
@@ -566,12 +745,23 @@ function addMsg(role, text, isTyping = false) {
   } else {
     bub.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   }
-  div.appendChild(av);
-  div.appendChild(bub);
+
+  row.appendChild(av);
+  row.appendChild(bub);
+  div.appendChild(row);
+
+  if (!isTyping) {
+    const time = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = getTime();
+    div.appendChild(time);
+  }
+
   log.appendChild(div);
   log.scrollTop = log.scrollHeight;
   return div;
 }
+
 
 function removeTyping() {
   const el = document.getElementById('typing-msg');
@@ -658,7 +848,7 @@ const FUN_PROMPTS = {
 
 function askTopic(key) {
   const prompt = TOPIC_PROMPTS[key];
-  if (prompt) callCosmo(prompt);
+  if (prompt) { registrarTopic(key); callCosmo(prompt); }
 }
 
 function funChat(key) {
@@ -677,6 +867,7 @@ function sendMsg() {
   const val = inp.value.trim();
   if (!val || isLoading) return;
   inp.value = '';
+  registrarPregunta(val);
   callCosmo(val);
 }
 
@@ -753,6 +944,12 @@ function doLogin() {
   const codigo = document.getElementById('login-codigo').value.trim();
   const err = document.getElementById('login-error');
   if (!nombre) { err.style.display = 'block'; err.textContent = '❌ Escribí tu nombre primero.'; return; }
+  if (codigo === 'kecho2026') {
+    document.getElementById('login-overlay').classList.add('oculto');
+    document.getElementById('panel-profe').classList.remove('oculto');
+    renderStats();
+    return;
+  }
   if (codigo !== CODIGO_ACCESO) { err.style.display = 'block'; err.textContent = '❌ Código incorrecto. Pedíselo al profe Kecho.'; return; }
   nombreAlumno = nombre;
   document.getElementById('login-overlay').classList.add('oculto');
@@ -773,6 +970,108 @@ function clearChat() {
   document.getElementById('chat-log').innerHTML = '';
   history = [];
   addMsg('cosmo', '¡Chat limpio! ✨ ¿En qué te puedo ayudar, ' + (nombreAlumno || 'che') + '?');
+}
+
+
+// ── DARK MODE ──
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  document.getElementById('dark-toggle').textContent =
+    document.body.classList.contains('dark') ? '☀️' : '🌙';
+}
+
+// ── LOADING SCREEN ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('oculto');
+  }, 2200);
+});
+
+// ── TIMESTAMPS EN MENSAJES ──
+const origAddMsg = addMsg;
+
+// ── FAQ ──
+let faqList = [];
+function registrarPregunta(texto) {
+  if (texto.length < 10) return;
+  const short = texto.length > 60 ? texto.substring(0, 60) + '...' : texto;
+  faqList = faqList.filter(f => f !== short);
+  faqList.unshift(short);
+  if (faqList.length > 5) faqList = faqList.slice(0, 5);
+  renderFAQ();
+  statsData.preguntas++;
+  renderStats();
+}
+function renderFAQ() {
+  const el = document.getElementById('faq-list');
+  if (faqList.length === 0) {
+    el.innerHTML = '<div class="faq-empty">Todavía no hay preguntas. ¡Sé el primero!</div>';
+    return;
+  }
+  el.innerHTML = faqList.map(f =>
+    `<div class="faq-item" onclick="usarFAQ(this.dataset.q)" data-q="${f.replace(/"/g,'&quot;')}">${f}</div>`
+  ).join('');
+}
+function usarFAQ(q) { document.getElementById('user-input').value = q; document.getElementById('user-input').focus(); }
+
+// ── STATS ──
+let statsData = { sesiones: 1, preguntas: 0, quiz: 0, topics: {} };
+function registrarTopic(topic) {
+  statsData.topics[topic] = (statsData.topics[topic] || 0) + 1;
+}
+function renderStats() {
+  document.getElementById('stat-sesiones').textContent = statsData.sesiones;
+  document.getElementById('stat-preguntas').textContent = statsData.preguntas;
+  document.getElementById('stat-quiz').textContent = statsData.quiz;
+  const sorted = Object.entries(statsData.topics).sort((a,b) => b[1]-a[1]);
+  const max = sorted.length ? sorted[0][1] : 1;
+  const labels = {unidad1:'Informática',hardware:'Hardware',numeracion:'Numeración',word:'Word',windows:'Windows',excel:'Excel',esi:'ESI',ambiente:'Ambiente'};
+  document.getElementById('profe-topics').innerHTML = sorted.length ?
+    sorted.map(([k,v]) => `<div class="topic-bar-row"><span class="topic-bar-label">${labels[k]||k}</span><div class="topic-bar-track"><div class="topic-bar-fill" style="width:${Math.round(v/max*100)}%"></div></div><span class="topic-bar-count">${v}</span></div>`).join('') :
+    '<div class="faq-empty">Sin datos aún.</div>';
+  const ultimas = faqList.slice(0,4);
+  document.getElementById('profe-ultimas').innerHTML = ultimas.length ?
+    ultimas.map(q => `<div style="font-size:12px;padding:5px 8px;border-radius:8px;background:var(--purple-light);color:var(--text);margin-bottom:5px;font-weight:600">${q}</div>`).join('') :
+    '<div class="faq-empty">Sin preguntas aún.</div>';
+}
+function cerrarProfe() { document.getElementById('panel-profe').classList.add('oculto'); }
+
+// ── MODO REPASO / QUIZ ──
+let quizActivo = false;
+let quizCorrectas = 0, quizTotal = 0;
+function iniciarQuiz() {
+  if (isLoading) return;
+  const unidad = document.getElementById('quiz-unidad').value;
+  const labels = {unidad1:'Introducción a la Informática',hardware:'Hardware y Software',numeracion:'Sistemas de Numeración',word:'Microsoft Word',windows:'Windows',excel:'Microsoft Excel'};
+  const tema = labels[unidad] || unidad;
+  quizActivo = true;
+  quizTotal++;
+  statsData.quiz++;
+  registrarTopic(unidad);
+  renderStats();
+  const prompt = `Estás en MODO REPASO. Hacele UNA sola pregunta de opción múltiple (4 opciones: A, B, C, D) al alumno sobre el tema: "${tema}". La pregunta debe ser clara, apropiada para 5° año de secundaria y relacionada con la planificación. Presentá solo la pregunta y las opciones, sin dar la respuesta todavía. Esperá la respuesta del alumno.`;
+  callCosmo(prompt);
+  document.getElementById('quiz-score').textContent = `Repasos iniciados: ${quizTotal}`;
+}
+
+// ── BADGE TOAST ──
+const origUnlock = unlockBadge;
+function unlockBadge(id) {
+  origUnlock(id);
+  const names = {'b-exp':'🗺 Explorador','b-hw':'🖥 Guru del Hardware','b-word':'📝 Master de Word','b-excel':'📊 Excel Pro','b-fun':'😄 Modo joda ON'};
+  if (names[id]) showToast('¡Logro desbloqueado! ' + names[id]);
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'badge-toast';
+  t.innerHTML = '🏅 ' + msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+// ── TIMESTAMPS ──
+function getTime() {
+  return new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
 }
 
 </script>
