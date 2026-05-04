@@ -100,7 +100,7 @@
   .xp-section { width: 100%; }
   .xp-top { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-family: 'Space Mono', monospace; }
   .xp-track { width: 100%; height: 8px; background: var(--purple-light); border-radius: 99px; overflow: hidden; }
-  .xp-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple-mid)); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+  .xp-fill { height: 100%; background: linear-gradient(90deg, #2DD4BF, #10B981); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
 
   .mood-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
   .mood-pill {
@@ -439,25 +439,28 @@
 <button id="dark-toggle" onclick="toggleDark()" title="Modo oscuro">🌙</button>
 
 <div id="loading-screen">
-  <svg class="loading-pet" width="100" height="100" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-    <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-    <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
-    <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
-    <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
-    <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
-    <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-    <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-    <circle cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
-    <circle cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
-    <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
-    <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
-    <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
-    <path d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
-    <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
-    <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
-    <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
-    <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
+  <svg class="loading-pet" width="90" height="90" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <line x1="60" y1="4" x2="60" y2="16" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="60" cy="4" r="5" fill="#2DD4BF"/>
+    <rect x="22" y="16" width="76" height="52" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+    <rect x="28" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+    <ellipse cx="40" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+    <ellipse cx="40" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+    <rect x="68" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+    <ellipse cx="80" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+    <ellipse cx="80" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+    <rect x="32" y="54" width="56" height="10" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+    <rect x="37" y="57" width="8" height="4" rx="2" fill="#2DD4BF"/>
+    <rect x="49" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+    <rect x="61" y="57" width="8" height="4" rx="2" fill="#2DD4BF"/>
+    <rect x="73" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+    <rect x="18" y="76" width="84" height="36" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+    <rect x="28" y="82" width="64" height="24" rx="7" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+    <circle cx="42" cy="91" r="4" fill="#2DD4BF"/>
+    <circle cx="60" cy="91" r="4" fill="#10B981"/>
+    <circle cx="78" cy="91" r="4" fill="#2DD4BF" opacity="0.4"/>
+    <rect x="30" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
+    <rect x="68" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
   </svg>
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
   <div class="loading-text">Despertando a Pixel...</div>
@@ -485,27 +488,28 @@
 <div id="login-overlay">
   <div class="login-card">
     <svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-      <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-      <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
-      <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
-      <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
-      <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
-      <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-      <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-      <circle cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
-      <circle cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
-      <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
-      <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
-      <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
-      <path d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
-      <ellipse cx="40" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
-      <ellipse cx="80" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
-      <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
-      <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
-      <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
-      <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
-    </svg>
+    <line x1="60" y1="4" x2="60" y2="16" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="60" cy="4" r="5" fill="#2DD4BF"/>
+    <rect x="22" y="16" width="76" height="52" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+    <rect x="28" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+    <ellipse cx="40" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+    <ellipse cx="40" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+    <rect x="68" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+    <ellipse cx="80" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+    <ellipse cx="80" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+    <rect x="32" y="54" width="56" height="10" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+    <rect x="37" y="57" width="8" height="4" rx="2" fill="#2DD4BF"/>
+    <rect x="49" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+    <rect x="61" y="57" width="8" height="4" rx="2" fill="#2DD4BF"/>
+    <rect x="73" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+    <rect x="18" y="76" width="84" height="36" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+    <rect x="28" y="82" width="64" height="24" rx="7" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+    <circle cx="42" cy="91" r="4" fill="#2DD4BF"/>
+    <circle cx="60" cy="91" r="4" fill="#10B981"/>
+    <circle cx="78" cy="91" r="4" fill="#2DD4BF" opacity="0.4"/>
+    <rect x="30" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
+    <rect x="68" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
+  </svg>
     <div class="login-title">¡Hola! Soy Pixel 🐾</div>
     <div class="login-sub">E.P.E.S. N° 43 · EDI Procesamiento de Datos I · 2026</div>
     <div class="login-field">
@@ -541,29 +545,58 @@
     <div class="pet-card">
       <div id="pet-wrap" onclick="petClick()" title="¡Hacé clic en mí!">
         <svg id="cosmo" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="60" cy="88" rx="34" ry="28" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-          <path id="tail" d="M90 96 Q112 82 105 64" fill="none" stroke="#A68EFA" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="60" cy="52" r="30" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2"/>
-          <ellipse cx="36" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(-15 36 28)"/>
-          <ellipse cx="84" cy="28" rx="9" ry="13" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1.2" transform="rotate(15 84 28)"/>
-          <ellipse cx="36" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(-15 36 28)"/>
-          <ellipse cx="84" cy="28" rx="4.5" ry="8" fill="#FBD0E3" transform="rotate(15 84 28)"/>
-          <circle cx="49" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-          <circle cx="71" cy="49" r="6.5" fill="white" stroke="#A68EFA" stroke-width="0.8"/>
-          <circle id="pl" cx="50" cy="50" r="3.8" fill="#3C2E8B"/>
-          <circle id="pr" cx="72" cy="50" r="3.8" fill="#3C2E8B"/>
-          <circle cx="51.5" cy="48.5" r="1.2" fill="white"/>
-          <circle cx="73.5" cy="48.5" r="1.2" fill="white"/>
-          <ellipse cx="60" cy="58" rx="3.5" ry="2.2" fill="#D4537E"/>
-          <path id="mouth" d="M53 64 Q60 71 67 64" fill="none" stroke="#D4537E" stroke-width="1.5" stroke-linecap="round"/>
-          <ellipse cx="40" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
-          <ellipse cx="80" cy="59" rx="7" ry="4.5" fill="#F4C0D1" opacity="0.55"/>
-          <rect x="42" y="19" width="36" height="6" rx="2" fill="#534AB7"/>
-          <rect x="50" y="13" width="20" height="8" rx="2" fill="#534AB7"/>
-          <line x1="78" y1="19" x2="86" y2="29" stroke="#534AB7" stroke-width="1.5"/>
-          <circle cx="86" cy="30" r="2.8" fill="#F59E0B"/>
-          <ellipse cx="38" cy="110" rx="13" ry="8" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1"/>
-          <ellipse cx="82" cy="110" rx="13" ry="8" fill="#EDE9FF" stroke="#A68EFA" stroke-width="1"/>
+          <!-- Antena -->
+          <line x1="60" y1="4" x2="60" y2="16" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="60" cy="4" r="5" fill="#2DD4BF" stroke="#0F9D8A" stroke-width="1"/>
+          <circle id="antena-led" cx="60" cy="4" r="2.5" fill="white" opacity="0.8"/>
+          <!-- Cabeza -->
+          <rect x="22" y="16" width="76" height="52" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+          <!-- Brillo cabeza -->
+          <rect x="28" y="20" width="28" height="7" rx="3.5" fill="#2DD4BF" opacity="0.12"/>
+          <!-- Ojo izquierdo -->
+          <rect x="28" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+          <ellipse id="eye-l" cx="40" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+          <ellipse cx="40" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+          <circle cx="42.5" cy="34.5" r="1.2" fill="white" opacity="0.9"/>
+          <!-- Ojo derecho -->
+          <rect x="68" y="28" width="24" height="18" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1.3"/>
+          <ellipse id="eye-r" cx="80" cy="37" rx="6" ry="6" fill="#2DD4BF"/>
+          <ellipse cx="80" cy="37" rx="3.5" ry="3.5" fill="#00FFF0" opacity="0.9"/>
+          <circle cx="82.5" cy="34.5" r="1.2" fill="white" opacity="0.9"/>
+          <!-- Boca -->
+          <rect x="32" y="54" width="56" height="10" rx="5" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+          <rect id="mouth" x="37" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.9"/>
+          <rect x="49" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+          <rect x="61" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.9"/>
+          <rect x="73" y="57" width="8" height="4" rx="2" fill="#2DD4BF" opacity="0.5"/>
+          <!-- Orejas -->
+          <rect x="10" y="30" width="12" height="16" rx="4" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.3"/>
+          <circle cx="16" cy="38" r="3.5" fill="#2DD4BF" opacity="0.7"/>
+          <rect x="98" y="30" width="12" height="16" rx="4" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.3"/>
+          <circle cx="104" cy="38" r="3.5" fill="#2DD4BF" opacity="0.7"/>
+          <!-- Cuello -->
+          <rect x="50" y="68" width="20" height="8" rx="3" fill="#153D2F" stroke="#2DD4BF" stroke-width="1"/>
+          <!-- Cuerpo -->
+          <rect x="18" y="76" width="84" height="36" rx="12" fill="#1A4A3A" stroke="#2DD4BF" stroke-width="1.8"/>
+          <!-- Panel pecho -->
+          <rect x="28" y="82" width="64" height="24" rx="7" fill="#0D2E24" stroke="#2DD4BF" stroke-width="1"/>
+          <!-- LEDs pecho -->
+          <circle cx="42" cy="91" r="4" fill="#2DD4BF"/>
+          <circle cx="42" cy="91" r="2" fill="#00FFF0"/>
+          <circle cx="60" cy="91" r="4" fill="#10B981"/>
+          <circle cx="60" cy="91" r="2" fill="#6EE7B7"/>
+          <circle cx="78" cy="91" r="4" fill="#2DD4BF" opacity="0.4"/>
+          <!-- Barra progreso -->
+          <rect x="34" y="100" width="52" height="4" rx="2" fill="#0A2018"/>
+          <rect id="xp-bar-robot" x="34" y="100" width="34" height="4" rx="2" fill="#2DD4BF"/>
+          <!-- Piernas -->
+          <rect x="30" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
+          <rect x="68" y="110" width="22" height="8" rx="4" fill="#153D2F" stroke="#2DD4BF" stroke-width="1.2"/>
+          <!-- Destellos -->
+          <circle cx="22" cy="82" r="2.5" fill="#2DD4BF" opacity="0.5"/>
+          <circle cx="98" cy="82" r="2.5" fill="#2DD4BF" opacity="0.5"/>
+          <circle cx="22" cy="106" r="2" fill="#10B981" opacity="0.6"/>
+          <circle cx="98" cy="106" r="2" fill="#10B981" opacity="0.6"/>
         </svg>
       </div>
 
@@ -773,7 +806,7 @@ function addMsg(role, text, isTyping = false) {
 
   const av = document.createElement('div');
   av.className = 'avatar';
-  av.textContent = role === 'cosmo' ? '🐾' : '👤';
+  av.textContent = role === 'cosmo' ? '🤖' : '👤';
 
   const bub = document.createElement('div');
   bub.className = 'bubble';
@@ -957,12 +990,16 @@ function setMood(m, btn) {
   mood = m;
   document.querySelectorAll('.mood-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const mouths = {
-    curioso: 'M53 64 Q60 71 67 64',
-    contento: 'M50 66 Q60 74 70 66',
-    pensativo: 'M54 67 Q60 65 66 67'
+  const eyeColors = {
+    curioso: '#2DD4BF',
+    contento: '#10B981',
+    pensativo: '#6EE7B7'
   };
-  document.getElementById('mouth').setAttribute('d', mouths[m]);
+  const eyeColor = eyeColors[m];
+  const eyeL = document.getElementById('eye-l');
+  const eyeR = document.getElementById('eye-r');
+  if (eyeL) eyeL.setAttribute('fill', eyeColor);
+  if (eyeR) eyeR.setAttribute('fill', eyeColor);
   animatePet();
 }
 
@@ -980,10 +1017,11 @@ function animatePet() {
 }
 
 setInterval(() => {
-  const t = Date.now() / 700;
-  const x = 105 + Math.sin(t) * 9;
-  const y = 64 + Math.cos(t) * 7;
-  document.getElementById('tail').setAttribute('d', `M90 96 Q112 82 ${x} ${y}`);
+  const led = document.getElementById('antena-led');
+  if (led) {
+    const pulse = (Math.sin(Date.now() / 400) + 1) / 2;
+    led.setAttribute('opacity', 0.3 + pulse * 0.7);
+  }
 }, 50);
 
 
