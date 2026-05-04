@@ -819,7 +819,7 @@ function addMsg(role, text, isTyping = false) {
 
   const av = document.createElement('div');
   av.className = 'avatar';
-  av.textContent = role === 'cosmo' ? '🤖' : '👤';
+  av.textContent = role === 'cosmo' ? '🦉' : '👤';
 
   const bub = document.createElement('div');
   bub.className = 'bubble';
@@ -1003,16 +1003,45 @@ function setMood(m, btn) {
   mood = m;
   document.querySelectorAll('.mood-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const eyeColors = {
-    curioso: '#2DD4BF',
-    contento: '#10B981',
-    pensativo: '#6EE7B7'
-  };
-  const eyeColor = eyeColors[m];
-  const eyeL = document.getElementById('eye-l');
-  const eyeR = document.getElementById('eye-r');
-  if (eyeL) eyeL.setAttribute('fill', eyeColor);
-  if (eyeR) eyeR.setAttribute('fill', eyeColor);
+
+  // Cambiar expresión del búho según mood
+  const svg = document.getElementById('cosmo');
+  if (svg) {
+    // Buscar todos los círculos de iris (los marrones grandes)
+    const circles = svg.querySelectorAll('circle');
+    const irisColors = { curioso: '#B45309', contento: '#15803D', pensativo: '#1D4ED8' };
+    const pupilColors = { curioso: '#1C1917', contento: '#14532D', pensativo: '#1E3A5F' };
+
+    // Cejas: rotación del SVG entero para expresión
+    const transforms = {
+      curioso: 'scale(1.05) translateY(-2px)',
+      contento: 'scale(1.05) translateY(-2px)',
+      pensativo: 'scale(1.02) translateY(0px)'
+    };
+
+    // Cambiar color del pico según mood
+    const picoBeak = { curioso: '#F59E0B', contento: '#EF4444', pensativo: '#6366F1' };
+
+    // Aplicar colores a iris y pupilas
+    let irisCount = 0;
+    circles.forEach(c => {
+      const r = parseFloat(c.getAttribute('r'));
+      if (r === 8) { c.setAttribute('fill', irisColors[m]); irisCount++; }
+      if (r === 5) { c.setAttribute('fill', pupilColors[m]); }
+    });
+
+    // Cambiar pico (polígono con color amarillo)
+    const polys = svg.querySelectorAll('polygon');
+    polys.forEach(p => {
+      if (p.getAttribute('points') === '60,62 54,70 66,70') {
+        p.setAttribute('fill', picoBeak[m]);
+      }
+    });
+
+    svg.style.transition = 'transform 0.2s ease';
+    svg.style.transform = transforms[m];
+    setTimeout(() => { svg.style.transform = 'scale(1) translateY(0)'; }, 300);
+  }
   animatePet();
 }
 
